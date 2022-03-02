@@ -11,7 +11,7 @@ export default function Login() {
 
 	const navigate = useNavigate()
 
-	const { loginUser } = useContext(AuthContext)
+	const { storeToken, verifyStoredToken } = useContext(AuthContext)
 
 	const handleSubmit = e => {
 		e.preventDefault()
@@ -22,9 +22,12 @@ export default function Login() {
 				console.log('i have a token mothafukkas')
 				const token = response.data.authToken
 				// store the token
-				loginUser(token)
-				// redirect to projects
-				navigate('/projects')
+				storeToken(token)
+				verifyStoredToken()
+					.then(() => {
+						// redirect to projects
+						navigate('/')
+					})
 			})
 			.catch(err => {
 				const errorDescription = err.response.data.message
